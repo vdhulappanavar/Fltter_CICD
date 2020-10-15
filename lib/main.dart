@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cicd/rest_api.dart';
 
 void main() {
   runApp(MyApp());
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Delivery Buddy'),
     );
   }
 }
@@ -73,41 +74,97 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+      body: FutureBuilder(
+       future: ApiService.getEmployees(),
+       builder: (context, AsyncSnapshot snapshot) {
+         final deliveryPersonData = snapshot.hasData ? snapshot.data['args'] : {};
+         print('deliveryPersonData');
+         print(deliveryPersonData['name']);
+         //print(snapshot);
+         if (snapshot.connectionState == ConnectionState.done) {
+           return SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child:  TextField(
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Name',
+                        ),
+                      )),
+                    Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child:  TextField(
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Email',
+                        ),
+                      )),
+                    Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child:  TextField(
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Password',
+                        ),
+                      )),
+                    Row( children: [Padding(padding: EdgeInsets.all(16.0),
+                    child: FloatingActionButton.extended(
+                      elevation: 1.0,
+                      heroTag: "2",
+                      onPressed: () {
+                        
+                      },
+                      label: Text("   JOIN   "))),
+                      Padding(padding: EdgeInsets.all(16.0),
+                    child: FloatingActionButton.extended(
+                      elevation: 1.0,
+                      heroTag: "2",
+                      onPressed: () {
+                        
+                      },
+                      label: Text("   Login   ")))
+                      ]),
+                          Text(
+                            deliveryPersonData['name'],
+                            style: Theme.of(context).textTheme.headline4,
+                          ),
+                          Column(
+                            children: [
+                              Image.asset('assets/delivery.jpg'),
+                              Text(
+                  'Request has been sent',
+                )
+                            ]
+                          )
+                        ],
+              ),
+            );
+          }
+         return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                TextField(
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Password',
+                  ),
+                ),
+                Text(
+                  'You have pushed the button this many times:',
+                )
+              ],
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+          );
+        }
+    ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
