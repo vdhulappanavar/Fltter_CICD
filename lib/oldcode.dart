@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cicd/rest_api.dart';
 import 'package:flutter_cicd/first_screen.dart';
-import 'package:flutter_cicd/second_screen.dart';
-import 'package:flutter_cicd/third_screen.dart';
-import 'package:flutter_cicd/loggedin.dart';
 
 void main() {
   runApp(MyApp());
@@ -18,15 +15,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: FirstScreen(),
-      // initialRoute: '/',
+      //home: MyHomePage(title: 'Delivery Buddy'),
+      initialRoute: '/',
         routes: {
           // When navigating to the "/" route, build the FirstScreen widget.
-          // '/': (context) => FirstScreen(),
+          '/': (context) => FirstScreen(),
           // When navigating to the "/second" route, build the SecondScreen widget.
-          '/second': (context) => SecondScreen(),
-          '/third': (context) => ThirdScreen(),
-          '/fourth': (context) => LoggedIn(),
+          '/second': (context) => FirstScreen(),
         },
     );
   }
@@ -140,7 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                           Column(
                             children: [
-                              Image.asset('assets/delivery.jpg'),
+                             Image .asset('assets/delivery.jpg'),
                               Text(
                   'Request has been sent',
                 )
